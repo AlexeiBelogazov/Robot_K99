@@ -1,6 +1,8 @@
 import pole
 import tkinter
 from tkinter import *
+from threading import Thread
+import time
 
 
 class Robot:
@@ -9,25 +11,17 @@ class Robot:
     napr = 1
     move_x = 0
     move_y = 0
-
-
     def __init__(self, pos_, napr, color,canvas, master=None):
-
-
         self.master = master
         self.napr = self.cor_napr(napr)
         self.pos = self.cor_pos(pos_)
         self.napr = napr
         self.x = self.pos[0]
         self.y = self.pos[1]
-
         self.canvas = canvas
-        #creating rectangle
         self.rectangle = self.canvas.create_rectangle(
             self.x-5, self.y-5, self.x+5, self.y+5, fill=color)
         self.canvas.pack()
-
-
         self.movement()
 
     def cor_pos(self, posi):
@@ -38,7 +32,6 @@ class Robot:
             elif pos < 20:
                 pos = 20
             pos_r.append(pos)
-
         return pos_r
 
     def cor_napr(self, napr):
@@ -71,8 +64,6 @@ class Robot:
             self.move_y -= 1
         elif self.move_y < 0:
             self.move_y += 1
-
-
 
     def left(self):
         if self.napr < 4:
@@ -108,6 +99,7 @@ class Robot:
             self.canvas.move(self.rectangle, self.move_x, self.move_y)
             self.x += self.move_x
             self.y += self.move_y
+        #print(self.x, self.y)
         self.canvas.after(30, self.movement)
 
 class Bot(Robot):
@@ -141,10 +133,11 @@ class Bot(Robot):
             self.canvas.move(self.rectangle, self.move_x, self.move_y)
             self.x += self.move_x
             self.y += self.move_y
+
+            #print(self.x,self.y)
         self.canvas.after(30, self.movement)
-
-
 def mas2():
+    print("ok1")
     master2 = tkinter.Tk()
     master2.geometry(f"600x600")
     text = Text(master2)
@@ -167,16 +160,29 @@ bot2.step()
 bot3.step()
 bot3.left()
 bot3.step()
+print("ok2")
+def bax():
+    while True:
+        time.sleep(0.01)
+        if plyer.x > (bot1.x - 20) and plyer.x < (bot1.x + 20):
+            if plyer.y > (bot1.y - 20) and plyer.y < (bot1.y + 20):
+                print("БАХПа БАХ")
+                #canvas.delete(plyer)
 
-if plyer.x == bot1.x:
-    if plyer.y == bot1.y:
-        mas2()
-if plyer.x == bot2.x:
-    if plyer.y == bot2.y:
-        mas2()
-if plyer.x == bot3.x:
-    if plyer.y == bot3.y:
-        mas2()
+        if plyer.x > (bot2.x - 20) and plyer.x < (bot2.x + 20):
+            if plyer.y > (bot2.y - 20) and plyer.y < (bot2.y + 20):
+                #canvas.delete(plyer)
+                print("БАХПа БАХ")
+
+        if plyer.x > (bot3.x - 20) and plyer.x < (bot3.x + 20):
+            if plyer.y > (bot3.y - 20) and plyer.y < (bot3.y + 20):
+                #canvas.delete(plyer)
+                print("БАХПа БАХ")
+
+print("ok3")
+th = Thread(target=bax, args=())
+th.start()
+print("ok4")
 
 master.bind("<KeyPress-Left>", lambda e: plyer.rait())
 master.bind("<KeyPress-Right>", lambda e: plyer.left())
