@@ -9,7 +9,7 @@ import math
 class Robot:
     x = 0
     y = 0
-    point =[]
+
     napr = 1
     move_x = 0
     move_y = 0
@@ -23,25 +23,18 @@ class Robot:
         self.canvas = canvas
         if self.napr == 1:
             self.rectangle = canvas.create_polygon([self.x-5,self.y-5],[self.x-5,self.y+5],[self.x+5,self.y], fill=color)
-            self.point.append([self.x-5,self.y-5])
-            self.point.append([self.x-5,self.y+5])
-            self.point.append([self.x+5,self.y])
+            self.point=[[self.x-5,self.y-5],[self.x-5,self.y+5],[self.x+5,self.y]]
+
 
         if self.napr == 2:
             self.rectangle = canvas.create_polygon([self.x-5,self.y-5],[self.x+5,self.y-5],[self.x,self.y+5], fill=color)
-            self.point.append([self.x-5,self.y-5])
-            self.point.append([self.x+5,self.y-5])
-            self.point.append([self.x,self.y+5])
+            self.point=[[self.x-5,self.y-5],[self.x+5,self.y-5],[self.x,self.y+5]]
         if self.napr == 3:
             self.rectangle = canvas.create_polygon([self.x+5,self.y-5],[self.x+5,self.y+5],[self.x-5,self.y], fill=color)
-            self.point.append([self.x+5,self.y-5])
-            self.point.append([self.x+5,self.y+5])
-            self.point.append([self.x-5,self.y])
+            self.point = [[self.x+5,self.y-5],[self.x+5,self.y+5],[self.x-5,self.y]]
         if self.napr == 4:
             self.rectangle = canvas.create_polygon([self.x-5,self.y+5],[self.x+5,self.y+5],[self.x,self.y-5], fill=color)
-            self.point.append([self.x-5,self.y+5])
-            self.point.append([self.x+5,self.y+5])
-            self.point.append([self.x,self.y-5])
+            self.point = [[self.x-5,self.y+5],[self.x+5,self.y+5],[self.x,self.y-5]]
         self.canvas.pack()
         self.movement()
 
@@ -87,33 +80,55 @@ class Robot:
             self.move_y += 1
 
     def left(self):
+        if self.napr == 1:
+            points=[[self.x-5,self.y-5],[self.x-5,self.y+5],[self.x+5,self.y]]
+        if self.napr == 2:
+            points=[[self.x-5,self.y-5],[self.x+5,self.y-5],[self.x,self.y+5]]
+        if self.napr == 3:
+            points = [[self.x+5,self.y-5],[self.x+5,self.y+5],[self.x-5,self.y]]
+        if self.napr == 4:
+            points = [[self.x-5,self.y+5],[self.x+5,self.y+5],[self.x,self.y-5]]
         if self.napr < 4:
             self.napr += 1
         else:
             self.napr = 1
-        self.rotate(self.point, 90, (self.x, self.y))
+        self.rotate(90,points, (self.x, self.y))
 
     def rait(self):
+        if self.napr == 1:
+            points=[[self.x-5,self.y-5],[self.x-5,self.y+5],[self.x+5,self.y]]
+        if self.napr == 2:
+            points=[[self.x-5,self.y-5],[self.x+5,self.y-5],[self.x,self.y+5]]
+        if self.napr == 3:
+            points = [[self.x+5,self.y-5],[self.x+5,self.y+5],[self.x-5,self.y]]
+        if self.napr == 4:
+            points = [[self.x-5,self.y+5],[self.x+5,self.y+5],[self.x,self.y-5]]
         if self.napr > 1:
             self.napr -= 1
         else:
             self.napr = 4
-        self.rotate(self.point, -90, (self.x, self.y))
+        print(self.point)
+        self.rotate(-90,points, (self.x, self.y))
 
-    def rotate(self,points, angle, center):
+    def rotate(self, angle,points, center):
+
         angle = math.radians(angle)
         cos_val = math.cos(angle)
         sin_val = math.sin(angle)
         cx, cy = center
         new_points = []
+        print(points)
         for x_old, y_old in points:
             x_old -= cx
             y_old -= cy
             x_new = x_old * cos_val - y_old * sin_val
             y_new = x_old * sin_val + y_old * cos_val
             new_points.append([x_new + cx, y_new + cy])
-            #self.master.itemconfig(self.rectangle, new_points)
-            self.point = new_points
+            print(new_points)
+        self.canvas.coords(self.rectangle, int(new_points[0][0]),int(new_points[0][1]), int(new_points[1][0]),int(new_points[1][1]), int(new_points[2][0]),int(new_points[2][1]))
+        #self.canvas.coords(self.rectangle, new_points[0], new_points[1],new_points[2])
+        #self.canvas.coords(self.rectangle, new_points)
+        self.point = new_points
 
 
 
@@ -149,26 +164,42 @@ class Bot(Robot):
 
     def movement(self):
         if self.x >= 300:
-            self.canvas.move(self.rectangle, -2, self.move_y)
+            self.canvas.move(self.rectangle, -5, self.move_y)
             self.x += -2
-            self.move_x += -2
+            #self.move_x += -2
+
+            self.left()
+            self.step()
+
             self.y += self.move_y
 
         elif self.x <= 20:
-            self.canvas.move(self.rectangle, 2, self.move_y)
+            self.canvas.move(self.rectangle, 5, self.move_y)
             self.x += 2
             self.move_x += 2
+
+            self.left()
+            self.step()
+
             self.y += self.move_y
         elif self.y >= 250 :
-            self.canvas.move(self.rectangle, self.move_x, -2)
+            self.canvas.move(self.rectangle, self.move_x, -5)
             self.x += self.move_x
             self.y += -2
             self.move_y += -2
+
+            self.left()
+            self.step()
+
         elif self.y <= 20:
-            self.canvas.move(self.rectangle, self.move_x, 2)
+            self.canvas.move(self.rectangle, self.move_x, 5)
             self.x += self.move_x
             self.y += 2
             self.move_y += 2
+
+            self.left()
+            self.step()
+
         else:
             self.canvas.move(self.rectangle, self.move_x, self.move_y)
             self.x += self.move_x
@@ -176,12 +207,7 @@ class Bot(Robot):
 
             #print(self.x,self.y)
         self.canvas.after(30, self.movement)
-def mas2():
-    print("ok1")
-    master2 = tkinter.Tk()
-    master2.geometry(f"600x600")
-    text = Text(master2)
-    text.insert(INSERT, "Бабах")
+
 
 pole_war = pole.Pole(320,380)
 master = tkinter.Tk()
@@ -208,16 +234,20 @@ def bax():
         if plyer.x > (bot1.x - 20) and plyer.x < (bot1.x + 20):
             if plyer.y > (bot1.y - 20) and plyer.y < (bot1.y + 20):
                 print("БАХПа БАХ")
-                #canvas.delete(plyer)
+                canvas.create_text(150, 30,
+                                    text="БАХПа БАХ c ботом 1")
+
 
         if plyer.x > (bot2.x - 20) and plyer.x < (bot2.x + 20):
             if plyer.y > (bot2.y - 20) and plyer.y < (bot2.y + 20):
-                #canvas.delete(plyer)
+                canvas.create_text(150, 50,
+                                   text="БАХПа БАХ c ботом 2")
                 print("БАХПа БАХ")
 
         if plyer.x > (bot3.x - 20) and plyer.x < (bot3.x + 20):
             if plyer.y > (bot3.y - 20) and plyer.y < (bot3.y + 20):
-                #canvas.delete(plyer)
+                canvas.create_text(150, 70,
+                                   text="БАХПа БАХ c ботом 3")
                 print("БАХПа БАХ")
 
 print("ok3")
