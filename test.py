@@ -35,6 +35,7 @@ def rotate(points, angle, center):
 def draw_square(points, color="red"):
     canvas.create_polygon(points, fill=color)
 
+
 def test():
     old_vertices = [[150, 150], [250, 150], [250, 250], [150, 250]]
     print ("vertices: ", vertices, "should be: ", old_vertices)

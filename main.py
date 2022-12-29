@@ -3,11 +3,13 @@ import tkinter
 from tkinter import *
 from threading import Thread
 import time
+import math
 
 
 class Robot:
     x = 0
     y = 0
+    point =[]
     napr = 1
     move_x = 0
     move_y = 0
@@ -19,8 +21,27 @@ class Robot:
         self.x = self.pos[0]
         self.y = self.pos[1]
         self.canvas = canvas
-        self.rectangle = self.canvas.create_rectangle(
-            self.x-5, self.y-5, self.x+5, self.y+5, fill=color)
+        if self.napr == 1:
+            self.rectangle = canvas.create_polygon([self.x-5,self.y-5],[self.x-5,self.y+5],[self.x+5,self.y], fill=color)
+            self.point.append([self.x-5,self.y-5])
+            self.point.append([self.x-5,self.y+5])
+            self.point.append([self.x+5,self.y])
+
+        if self.napr == 2:
+            self.rectangle = canvas.create_polygon([self.x-5,self.y-5],[self.x+5,self.y-5],[self.x,self.y+5], fill=color)
+            self.point.append([self.x-5,self.y-5])
+            self.point.append([self.x+5,self.y-5])
+            self.point.append([self.x,self.y+5])
+        if self.napr == 3:
+            self.rectangle = canvas.create_polygon([self.x+5,self.y-5],[self.x+5,self.y+5],[self.x-5,self.y], fill=color)
+            self.point.append([self.x+5,self.y-5])
+            self.point.append([self.x+5,self.y+5])
+            self.point.append([self.x-5,self.y])
+        if self.napr == 4:
+            self.rectangle = canvas.create_polygon([self.x-5,self.y+5],[self.x+5,self.y+5],[self.x,self.y-5], fill=color)
+            self.point.append([self.x-5,self.y+5])
+            self.point.append([self.x+5,self.y+5])
+            self.point.append([self.x,self.y-5])
         self.canvas.pack()
         self.movement()
 
@@ -70,12 +91,31 @@ class Robot:
             self.napr += 1
         else:
             self.napr = 1
+        self.rotate(self.point, 90, (self.x, self.y))
 
     def rait(self):
         if self.napr > 1:
             self.napr -= 1
         else:
             self.napr = 4
+        self.rotate(self.point, -90, (self.x, self.y))
+
+    def rotate(self,points, angle, center):
+        angle = math.radians(angle)
+        cos_val = math.cos(angle)
+        sin_val = math.sin(angle)
+        cx, cy = center
+        new_points = []
+        for x_old, y_old in points:
+            x_old -= cx
+            y_old -= cy
+            x_new = x_old * cos_val - y_old * sin_val
+            y_new = x_old * sin_val + y_old * cos_val
+            new_points.append([x_new + cx, y_new + cy])
+            #self.master.itemconfig(self.rectangle, new_points)
+            self.point = new_points
+
+
 
     def movement(self):
 
@@ -145,8 +185,9 @@ def mas2():
 
 pole_war = pole.Pole(320,380)
 master = tkinter.Tk()
-master.geometry(f"{pole_war.pole[0]}x{pole_war.pole[1]}")
-canvas = Canvas(master)
+#master.geometry(f"{pole_war.pole[0]}x{pole_war.pole[1]}")
+canvas = Canvas(master,width=pole_war.pole[0],height=pole_war.pole[1],bg="gray",
+          cursor="pencil")
 plyer = Robot([150, 150], 3, "red", canvas, master)
 bot1 = Bot([30, 50], 2, "blue", canvas, master)
 bot2 = Bot([250, 50], 1, "white", canvas, master)
