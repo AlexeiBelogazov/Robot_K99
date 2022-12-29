@@ -164,39 +164,43 @@ class Bot(Robot):
 
     def movement(self):
         if self.x >= 300:
-            self.canvas.move(self.rectangle, -5, self.move_y)
-            self.x += -2
+            self.canvas.move(self.rectangle, -10, self.move_y)
+            self.x += -10
             #self.move_x += -2
-
+            self.stop()
             self.left()
+            self.step()
             self.step()
 
             self.y += self.move_y
 
         elif self.x <= 20:
-            self.canvas.move(self.rectangle, 5, self.move_y)
-            self.x += 2
-            self.move_x += 2
-
+            self.canvas.move(self.rectangle, 10, self.move_y)
+            self.x += 10
+            #self.move_x += 2
+            self.stop()
+            self.step()
             self.left()
             self.step()
 
             self.y += self.move_y
         elif self.y >= 250 :
-            self.canvas.move(self.rectangle, self.move_x, -5)
+            self.canvas.move(self.rectangle, self.move_x, -10)
             self.x += self.move_x
-            self.y += -2
-            self.move_y += -2
-
+            self.y += -10
+            #self.move_y += -2
+            self.stop()
+            self.step()
             self.left()
             self.step()
 
         elif self.y <= 20:
-            self.canvas.move(self.rectangle, self.move_x, 5)
+            self.canvas.move(self.rectangle, self.move_x, 10)
             self.x += self.move_x
-            self.y += 2
-            self.move_y += 2
-
+            self.y += 10
+            #self.move_y += 2
+            self.stop()
+            self.step()
             self.left()
             self.step()
 
