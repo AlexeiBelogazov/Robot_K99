@@ -155,7 +155,7 @@ class Robot:
             self.x += self.move_x
             self.y += self.move_y
         #print(self.x, self.y)
-        self.canvas.after(30, self.movement)
+        self.canvas.after(50, self.movement)
 
 class Bot(Robot):
 
@@ -164,8 +164,8 @@ class Bot(Robot):
 
     def movement(self):
         if self.x >= 300:
-            self.canvas.move(self.rectangle, -10, self.move_y)
-            self.x += -10
+            self.canvas.move(self.rectangle, -5, self.move_y)
+            self.x += -5
             #self.move_x += -2
             self.stop()
             self.left()
@@ -175,8 +175,8 @@ class Bot(Robot):
             self.y += self.move_y
 
         elif self.x <= 20:
-            self.canvas.move(self.rectangle, 10, self.move_y)
-            self.x += 10
+            self.canvas.move(self.rectangle, 5, self.move_y)
+            self.x += 5
             #self.move_x += 2
             self.stop()
             self.step()
@@ -185,9 +185,9 @@ class Bot(Robot):
 
             self.y += self.move_y
         elif self.y >= 250 :
-            self.canvas.move(self.rectangle, self.move_x, -10)
+            self.canvas.move(self.rectangle, self.move_x, -5)
             self.x += self.move_x
-            self.y += -10
+            self.y += -5
             #self.move_y += -2
             self.stop()
             self.step()
@@ -195,9 +195,9 @@ class Bot(Robot):
             self.step()
 
         elif self.y <= 20:
-            self.canvas.move(self.rectangle, self.move_x, 10)
+            self.canvas.move(self.rectangle, self.move_x, 5)
             self.x += self.move_x
-            self.y += 10
+            self.y += 5
             #self.move_y += 2
             self.stop()
             self.step()
@@ -210,7 +210,7 @@ class Bot(Robot):
             self.y += self.move_y
 
             #print(self.x,self.y)
-        self.canvas.after(30, self.movement)
+        self.canvas.after(50, self.movement)
 
 
 pole_war = pole.Pole(320,380)
@@ -234,7 +234,7 @@ bot3.step()
 print("ok2")
 def bax():
     while True:
-        time.sleep(0.01)
+        time.sleep(0.05)
         if plyer.x > (bot1.x - 20) and plyer.x < (bot1.x + 20):
             if plyer.y > (bot1.y - 20) and plyer.y < (bot1.y + 20):
                 print("БАХПа БАХ")
