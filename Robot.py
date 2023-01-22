@@ -1,13 +1,16 @@
 import math
-
+from pole import Pole
 class Robot:
     x = 0
     y = 0
+    pole = []
 
     napr = 1
     move_x = 0
     move_y = 0
-    def __init__(self, pos_, napr, color,canvas, master=None):
+    def __init__(self, pos_, napr, color, canvas, pole, master=None):
+        self.pole=pole.pole
+        print(self.pole)
         self.master = master
         self.napr = self.cor_napr(napr)
         self.pos = self.cor_pos(pos_)
@@ -34,12 +37,15 @@ class Robot:
 
     def cor_pos(self, posi):
         pos_r = []
+        i = 0
         for pos in posi:
-            if pos > 300:
-                pos = 300
+            self.pole[i]
+            if pos > (self.pole[i] - 20):
+                pos = self.pole[i] - 20
             elif pos < 20:
                 pos = 20
             pos_r.append(pos)
+            i += 1
         return pos_r
 
     def cor_napr(self, napr):
@@ -128,7 +134,7 @@ class Robot:
 
     def movement(self):
 
-        if self.x >= 300:
+        if self.x >= (self.pole[0] - 20):
             self.canvas.move(self.rectangle, -2, self.move_y)
             self.x += -2
             self.y += self.move_y
@@ -136,7 +142,7 @@ class Robot:
             self.canvas.move(self.rectangle, 2, self.move_y)
             self.x += 2
             self.y += self.move_y
-        elif self.y >= 250 :
+        elif self.y >= (self.pole[1] - 20):
             self.canvas.move(self.rectangle, self.move_x, -2)
             self.x += self.move_x
             self.y += -2

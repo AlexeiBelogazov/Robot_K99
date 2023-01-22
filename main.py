@@ -6,25 +6,21 @@ import time
 import math
 from Robot import Robot
 from Bot import Bot
-
-
-
-
-
-
-
-pole_war = pole.Pole(320,380)
+pole_x = 1320
+pole_y = 580
+pole_war = pole.Pole(pole_x,pole_y)
 master = tkinter.Tk()
 #master.geometry(f"{pole_war.pole[0]}x{pole_war.pole[1]}")
 canvas = Canvas(master,width=pole_war.pole[0],height=pole_war.pole[1],bg="gray",
           cursor="pencil")
+ppp = [pole_x, pole_y]
 all_bot = []
-plyer = Robot([150, 150], 3, "red", canvas, master)
-bot1 = Bot([30, 50], 2, "blue", canvas, master)
+plyer = Robot([150, 150], 3, "red", canvas, pole_war, master)
+bot1 = Bot([30, 50], 2, "blue", canvas, pole_war, master)
 all_bot.append(bot1)
-bot2 = Bot([250, 50], 1, "white", canvas, master)
+bot2 = Bot([250, 50], 1, "white", canvas, pole_war, master)
 all_bot.append(bot2)
-bot3 = Bot([200, 180], 4, "black", canvas, master)
+bot3 = Bot([200, 180], 4, "black", canvas,pole_war, master)
 all_bot.append(bot3)
 
 bot1.step()
